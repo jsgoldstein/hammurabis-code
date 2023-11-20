@@ -1,10 +1,5 @@
-import copy
 import math
 from typing import Callable, List
-
-from hypothesis import given
-from hypothesis.strategies import lists as a_list
-from hypothesis.strategies import integers as of_ints
 
 
 def insertion_sort_left(items: List[int]) -> None:
@@ -144,55 +139,3 @@ def count_inversions(items: List[int], l: int, m: int, r: int) -> int:
             inversions = inversions + len(left) - i
         l = l + 1
     return inversions
-
-
-class TestSorts:
-    @given(a_list(of_ints()))
-    def test_insertion_sort_left(self, a: List[int]) -> None:
-        b = copy.deepcopy(a)
-        insertion_sort_left(b)
-
-        assert sorted(a) == b
-
-    @given(a_list(of_ints()))
-    def test_insertion_sort_right(self, a: List[int]) -> None:
-        b = copy.deepcopy(a)
-        insertion_sort_right(b)
-
-        assert sorted(a) == b
-
-    @given(a_list(of_ints()))
-    def test_merge_sort_merge(self, a: List[int]) -> None:
-        b = copy.deepcopy(a)
-        merge_sort(b, 0, len(b), merge)
-
-        assert sorted(a) == b
-
-    @given(a_list(of_ints()))
-    def test_merge_sort_merge_less_mem(self, a: List[int]) -> None:
-        b = copy.deepcopy(a)
-        merge_sort(b, 0, len(b), merge_less_mem)
-
-        assert sorted(a) == b
-
-    @given(a_list(of_ints()))
-    def test_merge_sort_merge_no_inf(self, a: List[int]) -> None:
-        b = copy.deepcopy(a)
-        merge_sort(b, 0, len(b), merge_no_inf)
-
-        assert sorted(a) == b
-
-    @given(a_list(of_ints(), min_size=3, unique=True))
-    def test_merge_sort_count_inversions(self, a: List[int]) -> None:
-        count = 0
-        i = 0
-        while i < len(a):
-            j = i + 1
-            while j < len(a):
-                if a[i] > a[j]:
-                    count = count + 1
-                j = j + 1
-            i = i + 1
-
-        b = copy.deepcopy(a)
-        assert count == merge_sort_count_inversions(b, 0, len(b))
