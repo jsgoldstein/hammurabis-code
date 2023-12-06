@@ -38,3 +38,8 @@ class TestSearches:
                 break
 
         assert result == in_list
+
+    @given(lists(integers()), integers())
+    def test_bin_search_again(self, a: List[int], v: int) -> None:
+        a = sorted(a)
+        assert searches.bin_search_again(a, v) == searches.search(a, v) or -1
